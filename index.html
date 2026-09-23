@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14171b;
+    --surface:#1c2127;
+    --surface-2:#232933;
+    --border:#2a3038;
+    --gold:#d6a534;
+    --gold-soft:#e8c473;
+    --green:#3fae44;
+    --green-soft:#7ecf7f;
+    --red:#c94a3a;
+    --red-soft:#e08a7c;
+    --text:#eef1f4;
+    --text-muted:#9aa4b0;
+    --text-faint:#6b7480;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:.2px;margin:0 0 .4em 0;color:var(--text);}
+  a{color:var(--gold-soft);}
+  button{font-family:inherit;cursor:pointer;}
+  input,select,textarea{font-family:inherit;}
+
+  header.top{
+    background:linear-gradient(180deg,#171b20 0%,#14171b 100%);
+    border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;
+  }
+  .top-inner{max-width:1180px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;gap:16px;}
+  .brand-icon{
+    width:48px;height:48px;border-radius:50%;flex:none;
+    border:2px solid var(--gold);background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:var(--gold-soft);
+  }
+  .brand-text{flex:1;min-width:0;}
+  .brand-text .title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;}
+  .brand-text .tag{color:var(--text-muted);font-size:12.5px;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--gold);color:#1b1503;border:none;
+    padding:10px 16px;border-radius:var(--radius);
+    font-size:13.5px;font-weight:600;transition:background .15s,transform .1s;
+  }
+  .btn:hover{background:var(--gold-soft);}
+  .btn:active{transform:translateY(1px);}
+  .btn.secondary{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .btn.secondary:hover{border-color:var(--gold);color:var(--gold-soft);}
+  .btn.danger{background:var(--red);color:#fff;}
+  .btn.danger:hover{background:#e0594a;}
+  .btn.small{padding:6px 12px;font-size:12px;}
+
+  main{max-width:1180px;margin:0 auto;padding:28px 20px 80px;}
+  .lede{color:var(--text-muted);font-size:14.5px;max-width:640px;margin-bottom:20px;}
+
+  .toolbar{
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    justify-content:space-between;margin-bottom:22px;
+  }
+  .search-wrap{position:relative;flex:1;min-width:220px;max-width:360px;}
+  .search-wrap input{
+    width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    padding:10px 12px 10px 34px;border-radius:var(--radius);font-size:13.5px;outline:none;
+  }
+  .search-wrap input:focus{border-color:var(--gold);}
+  .search-wrap .icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:14px;}
+
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .chip{
+    background:var(--surface);border:1px solid var(--border);color:var(--text-muted);
+    padding:6px 14px;border-radius:999px;font-size:12.5px;font-weight:500;
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .chip:hover{border-color:var(--gold);color:var(--gold-soft);}
+  .chip.active{background:var(--gold);color:#1b1503;border-color:var(--gold);}
+
+  .site-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;}
+  .site-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px;display:flex;flex-direction:column;gap:10px;
+    transition:border-color .15s,transform .1s;position:relative;
+  }
+  .site-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .site-card .icon{
+    width:44px;height:44px;border-radius:10px;background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+    border:1px solid var(--border);
+  }
+  .site-card .name{font-family:'Fraunces',serif;font-size:16px;font-weight:600;}
+  .site-card .desc{color:var(--text-muted);font-size:12.5px;flex:1;}
+  .site-card .cat{
+    display:inline-block;align-self:flex-start;
+    background:var(--surface-2);color:var(--gold-soft);
+    font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;
+  }
+  .site-card .row{display:flex;gap:8px;align-items:center;margin-top:4px;}
+  .site-card .row .btn{flex:1;justify-content:center;}
+  .site-card .edit-btns{display:none;gap:6px;position:absolute;top:14px;right:14px;}
+  body.manage-on .site-card .edit-btns{display:flex;}
+  .icon-btn{
+    width:26px;height:26px;border-radius:6px;border:1px solid var(--border);
+    background:var(--surface-2);color:var(--text-muted);display:flex;align-items:center;
+    justify-content:center;font-size:13px;transition:border-color .15s,color .15s;
+  }
+  .icon-btn:hover{border-color:var(--gold);color:var(--gold-soft);}
+  .icon-btn.danger:hover{border-color:var(--red);color:var(--red-soft);}
+
+  .add-card{
+    display:none;align-items:center;justify-content:center;
+    border:1.5px dashed var(--border);border-radius:var(--radius);
+    color:var(--text-faint);font-size:13.5px;font-weight:600;min-height:150px;
+    background:transparent;transition:border-color .15s,color .15s;
+  }
+  body.manage-on .add-card{display:flex;}
+  .add-card:hover{border-color:var(--gold);color:var(--gold-soft);}
+
+  .empty-state{
+    text-align:center;color:var(--text-faint);font-size:13.5px;
+    padding:50px 20px;border:1px dashed var(--border);border-radius:var(--radius);
+  }
+
+  /* Modal */
+  .modal-bg{
+    display:none;position:fixed;inset:0;background:rgba(10,12,14,.6);
+    align-items:center;justify-content:center;z-index:100;padding:20px;
+  }
+  .modal-bg.show{display:flex;}
+  .modal{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;width:100%;max-width:420px;
+  }
+  .modal h3{font-size:17px;margin-bottom:14px;}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+  .field label{font-size:12.5px;color:var(--text-muted);font-weight:500;}
+  .field .hint{font-size:11px;color:var(--text-faint);}
+  input[type=text],input[type=url],select,textarea{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    padding:9px 11px;border-radius:6px;font-size:13.5px;outline:none;width:100%;
+    transition:border-color .15s;
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--gold);}
+  textarea{resize:vertical;min-height:56px;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px;}
+
+  footer{
+    text-align:center;color:var(--text-faint);font-size:12px;
+    padding:20px;border-top:1px solid var(--border);
+  }
+
+  @media(max-width:640px){
+    .site-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+    .toolbar{flex-direction:column;align-items:stretch;}
+    .search-wrap{max-width:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand-icon">P</div>
+    <div class="brand-text">
+      <div class="title" id="portalTitle">Portal Website</div>
+      <div class="tag">Pilih aplikasi yang ingin dibuka</div>
+    </div>
+    <button class="btn secondary" id="toggleManageBtn" onclick="toggleManage()">Masuk sebagai Admin</button>
+  </div>
+</header>
+
+<main>
+  <h1 style="font-size:24px;">Semua Aplikasi</h1>
+  <p class="lede">Klik salah satu kartu untuk membuka website/aplikasi terkait. Hanya admin yang login (tombol "Masuk sebagai Admin") yang bisa menambah, mengedit, atau menghapus daftar ini.</p>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <span class="icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Cari nama aplikasi..." oninput="renderGrid()">
+    </div>
+  </div>
+
+  <div class="chips" id="categoryChips"></div>
+
+  <div id="loadingState" style="color:var(--text-faint);font-size:13.5px;padding:30px 0;">Memuat data...</div>
+  <div class="site-grid hidden" id="siteGrid"></div>
+  <div class="empty-state hidden" id="emptyState">Tidak ada aplikasi yang cocok. Coba kata kunci lain atau tambahkan lewat "Masuk sebagai Admin".</div>
+</main>
+
+<footer>Data aplikasi tersimpan di database bersama (Firebase) — semua pengunjung melihat daftar yang sama. Hanya admin yang login yang bisa menambah/mengubah/menghapus.</footer>
+
+<!-- Modal login admin -->
+<div class="modal-bg" id="loginModalBg">
+  <div class="modal">
+    <h3>Masuk sebagai Admin</h3>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>Email</label>
+        <input type="text" id="loginEmail" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" required autocomplete="current-password">
+      </div>
+      <div id="loginError" class="hidden" style="color:var(--red-soft);font-size:12.5px;margin:-6px 0 10px;"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn secondary" onclick="closeLoginModal()">Batal</button>
+        <button type="submit" class="btn" id="loginSubmitBtn">Masuk</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal tambah/edit -->
+<div class="modal-bg" id="siteModalBg">
+  <div class="modal">
+    <h3 id="siteModalTitle">Tambah Aplikasi</h3>
+    <form id="siteForm" onsubmit="simpanSite(event)">
+      <input type="hidden" id="siteEditId">
+      <div class="field">
+        <label>Nama aplikasi</label>
+        <input type="text" id="siteNama" required placeholder="Contoh: Sistem Paket Asrama">
+      </div>
+      <div class="field">
+        <label>Link / URL</label>
+        <input type="url" id="siteUrl" required placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Kategori</label>
+        <input type="text" id="siteKategori" placeholder="Contoh: Asrama, Akademik, Keuangan" list="kategoriList">
+        <datalist id="kategoriList"></datalist>
+        <div class="hint">Boleh kosong. Diketik bebas — dipakai untuk mengelompokkan kartu.</div>
+      </div>
+      <div class="field">
+        <label>Ikon (emoji, 1-2 karakter)</label>
+        <input type="text" id="siteIkon" maxlength="2" placeholder="🏠">
+      </div>
+      <div class="field">
+        <label>Deskripsi singkat</label>
+        <textarea id="siteDesk" placeholder="Keterangan singkat tentang aplikasi ini"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn secondary" onclick="closeModal()">Batal</button>
+        <button type="submit" class="btn">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import {
+  getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+/* ====== GANTI DENGAN CONFIG DARI FIREBASE CONSOLE (Project settings > Your apps) ====== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBPahcs4NrBWH29R7Kg-ZhEmWcDPL7hMcc",
+  authDomain: "portal-siswa-dd9aa.firebaseapp.com",
+  projectId: "portal-siswa-dd9aa",
+  storageBucket: "portal-siswa-dd9aa.firebasestorage.app",
+  messagingSenderId: "559387199224",
+  appId: "1:559387199224:web:477992e28f790ca4179d0d"
+};
+/* ======================================================================================= */
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const sitesCol = collection(db, 'sites');
+
+function escapeHtml(str){
+  return (str||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+let sitesCache = [];
+let activeCategory = '';
+let currentUser = null;
+let dataLoaded = false;
+
+/* --- Auth --- */
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  document.body.classList.toggle('manage-on', !!user);
+  const btn = document.getElementById('toggleManageBtn');
+  btn.textContent = user ? 'Keluar (Admin)' : 'Masuk sebagai Admin';
+  renderGrid();
+});
+
+window.toggleManage = function(){
+  if(currentUser){
+    signOut(auth);
+  } else {
+    document.getElementById('loginError').classList.add('hidden');
+    document.getElementById('loginForm').reset();
+    document.getElementById('loginModalBg').classList.add('show');
+  }
+};
+window.closeLoginModal = function(){
+  document.getElementById('loginModalBg').classList.remove('show');
+};
+window.handleLogin = async function(e){
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginSubmitBtn');
+  const errEl = document.getElementById('loginError');
+  btn.disabled = true; btn.textContent = 'Memeriksa...';
+  try{
+    await signInWithEmailAndPassword(auth, email, pass);
+    document.getElementById('loginModalBg').classList.remove('show');
+  }catch(err){
+    errEl.textContent = 'Email atau password salah.';
+    errEl.classList.remove('hidden');
+  }
+  btn.disabled = false; btn.textContent = 'Masuk';
+};
+
+/* --- Data (real-time, semua pengunjung lihat data yang sama) --- */
+onSnapshot(sitesCol, snap => {
+  sitesCache = snap.docs.map(d => ({id: d.id, ...d.data()}));
+  dataLoaded = true;
+  document.getElementById('loadingState').classList.add('hidden');
+  document.getElementById('siteGrid').classList.remove('hidden');
+  renderGrid();
+}, err => {
+  document.getElementById('loadingState').textContent = 'Gagal memuat data: ' + err.message + ' (cek firebaseConfig & Rules)';
+});
+
+function renderCategoryChips(){
+  const cats = [...new Set(sitesCache.map(s=>s.kategori).filter(Boolean))].sort();
+  const wrap = document.getElementById('categoryChips');
+  if(!cats.length){ wrap.innerHTML=''; return; }
+  let html = `<button class="chip ${activeCategory===''?'active':''}" onclick="setCategory('')">Semua</button>`;
+  html += cats.map(c=>`<button class="chip ${activeCategory===c?'active':''}" onclick="setCategory('${escapeHtml(c)}')">${escapeHtml(c)}</button>`).join('');
+  wrap.innerHTML = html;
+  document.getElementById('kategoriList').innerHTML = cats.map(c=>`<option value="${escapeHtml(c)}">`).join('');
+}
+window.setCategory = function(c){ activeCategory = c; renderGrid(); };
+
+function renderGrid(){
+  if(!dataLoaded) return;
+  renderCategoryChips();
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  let sites = sitesCache;
+  if(activeCategory) sites = sites.filter(s=>s.kategori===activeCategory);
+  if(q) sites = sites.filter(s=>(s.nama||'').toLowerCase().includes(q) || (s.desk||'').toLowerCase().includes(q));
+
+  const grid = document.getElementById('siteGrid');
+  const cards = sites.map(s=>`
+    <div class="site-card">
+      <div class="edit-btns">
+        <button class="icon-btn" title="Edit" onclick="editSiteOpen('${s.id}')">✎</button>
+        <button class="icon-btn danger" title="Hapus" onclick="hapusSite('${s.id}')">✕</button>
+      </div>
+      <div class="icon">${escapeHtml(s.ikon || '🔗')}</div>
+      <div class="name">${escapeHtml(s.nama)}</div>
+      ${s.kategori ? `<span class="cat">${escapeHtml(s.kategori)}</span>` : ''}
+      <div class="desc">${escapeHtml(s.desk || '')}</div>
+      <div class="row">
+        <a class="btn" href="${escapeHtml(s.url)}" target="_blank" rel="noopener">Buka</a>
+      </div>
+    </div>`).join('');
+
+  grid.innerHTML = cards + `<button type="button" class="add-card" onclick="openSiteModal()">+ Tambah Aplikasi</button>`;
+  document.getElementById('emptyState').classList.toggle('hidden', sites.length>0);
+}
+window.renderGrid = renderGrid;
+
+/* --- Tambah / Edit / Hapus (butuh login, ditegakkan oleh Firestore Rules) --- */
+window.openSiteModal = function(){
+  document.getElementById('siteForm').reset();
+  document.getElementById('siteEditId').value = '';
+  document.getElementById('siteModalTitle').textContent = 'Tambah Aplikasi';
+  document.getElementById('siteModalBg').classList.add('show');
+};
+window.editSiteOpen = function(id){
+  const s = sitesCache.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('siteEditId').value = s.id;
+  document.getElementById('siteModalTitle').textContent = 'Edit Aplikasi';
+  document.getElementById('siteNama').value = s.nama || '';
+  document.getElementById('siteUrl').value = s.url || '';
+  document.getElementById('siteKategori').value = s.kategori || '';
+  document.getElementById('siteIkon').value = s.ikon || '';
+  document.getElementById('siteDesk').value = s.desk || '';
+  document.getElementById('siteModalBg').classList.add('show');
+};
+window.closeModal = function(){ document.getElementById('siteModalBg').classList.remove('show'); };
+
+window.simpanSite = async function(e){
+  e.preventDefault();
+  const editId = document.getElementById('siteEditId').value;
+  const data = {
+    nama: document.getElementById('siteNama').value.trim(),
+    url: document.getElementById('siteUrl').value.trim(),
+    kategori: document.getElementById('siteKategori').value.trim(),
+    ikon: document.getElementById('siteIkon').value.trim(),
+    desk: document.getElementById('siteDesk').value.trim(),
+  };
+  try{
+    if(editId){
+      await updateDoc(doc(db,'sites',editId), data);
+    } else {
+      await addDoc(sitesCol, data);
+    }
+    window.closeModal();
+  }catch(err){
+    alert('Gagal menyimpan (pastikan sudah login sebagai admin): ' + err.message);
+  }
+};
+window.hapusSite = async function(id){
+  if(!confirm('Hapus aplikasi ini dari menu?')) return;
+  try{
+    await deleteDoc(doc(db,'sites',id));
+  }catch(err){
+    alert('Gagal menghapus (pastikan sudah login sebagai admin): ' + err.message);
+  }
+};
+</script>
+</body>
+</html>
